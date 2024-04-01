@@ -7,7 +7,7 @@ const Cards = ({ info }) => {
         <>
           <div
             key={product.title}
-            className="pb-4 md:w-auto text-black ml-3 md:mx-[60px] "
+            className="pb-4 md:w-auto text-black ml-3 md:mx-[30px] "
           >
             <div className="flex grid grid-cols-1 relative w-[280px] h-[414px] md:bg-[FFFFFF] md:border-2 md:border-[#E1E1E1] md:rounded-lg">
               <div>
