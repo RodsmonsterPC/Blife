@@ -3,8 +3,36 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useUserContext } from "../contexts/userContext";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(false);
+
+  const infoData = useUserContext();
+
+  const {
+    allProducts,
+    setAllProducts,
+    countProducts,
+    setCountProducts,
+    setTotal,
+    total,
+  } = infoData;
+
+  const onDeleteProducts = (product) => {
+    const results = allProducts.filter((item) => item.id !== product.id);
+
+    setTotal(total - product.price * product.quantity);
+    setCountProducts(countProducts - product.quantity);
+    setAllProducts(results);
+  };
+
+  const onCleanCart = () => {
+    setAllProducts([]);
+    setTotal(0);
+    setCountProducts(0);
+  };
+
   return (
     <div>
       <div className="navbar-h pt-[5px] pb-2 w-auto bg-white shadow-md md:shadow-none z-10">
@@ -57,14 +85,75 @@ const Navbar = () => {
                 <Link href="">
                   <Image src="/user.png" width={26} height={26} alt="user" />
                 </Link>
-                <Link href="" className="">
-                  <Image
-                    src="/shopping.png"
-                    width={24}
-                    height={24}
-                    alt="shopping"
-                  />
-                </Link>
+
+                <div
+                  className="relative md:ml-m-rb md:mr-m-buttons"
+                  onClick={() => setActive(!active)}
+                >
+                  <Link href="" className="">
+                    <Image
+                      className="logo"
+                      src="/shopping.png"
+                      width={24}
+                      height={24}
+                      alt="shopping"
+                    />
+                  </Link>
+                  <div className="flex rounded-full bg-[#DD0606] w-4 h-4 text-center items-center justify-center absolute bottom-4 left-4">
+                    <span className="text-xs text-black">{countProducts}</span>
+                  </div>
+                </div>
+                <div
+                  className={`flex flex-col w-[16rem] bg-white absolute top-60 left-6 shadow-2xl rounded-md z-50 ${
+                    active ? "" : "hidden"
+                  }`}
+                >
+                  {allProducts.length ? (
+                    <>
+                      <div className="flex flex-col text-black justify-between border-b-2 border-gray-200 z-30 ">
+                        {allProducts.map((product) => (
+                          <div
+                            className="flex justify-between items-center "
+                            key={product.id}
+                          >
+                            <span className="m-4 text-sm ">
+                              {product.quantity}
+                            </span>
+                            <p className="text-xs w-[100px]">{product.title}</p>
+
+                            <span className=" text-sm font-semibold ">
+                              {product.price}
+                            </span>
+                            <Image
+                              className="m-3 "
+                              width={15}
+                              height={15}
+                              src={"/icon-close.svg"}
+                              alt="close icon"
+                              onClick={() => onDeleteProducts(product)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex items-center text-black justify-center pt-3 pb-3">
+                        <h3 className="text-sm font-semibold mr-3">Total:</h3>
+                        <span className="text-sm">${total}</span>
+                      </div>
+
+                      <button className="bg-gray-100 p-[.5rem] w-full  text-black transition ease-in-out delay-150 hover:-translate-y-0 hover:scale-110 hover:bg-sky-600 hover:text-white duration-300">
+                        Pagar
+                      </button>
+                      <button
+                        onClick={onCleanCart}
+                        className="bg-button-color p-[.5rem] w-full rounded-b-lg text-black transition ease-in-out delay-150 hover:-translate-y-0 hover:scale-110 hover:bg-red-600 hover:text-white duration-300"
+                      >
+                        Vaciar el carrito
+                      </button>
+                    </>
+                  ) : (
+                    <p className="text-center"> El carrito esta vacio </p>
+                  )}
+                </div>
               </div>
             </ul>
           </div>
@@ -87,15 +176,74 @@ const Navbar = () => {
                 alt="user"
               />
             </Link>
-            <Link href="" className="md:ml-m-rb md:mr-m-buttons">
-              <Image
-                className="logo"
-                src="/shopping.png"
-                width={24}
-                height={24}
-                alt="shopping"
-              />
-            </Link>
+            <div
+              className="relative md:ml-m-rb md:mr-m-buttons"
+              onClick={() => setActive(!active)}
+            >
+              <Link href="" className="">
+                <Image
+                  className="logo"
+                  src="/shopping.png"
+                  width={24}
+                  height={24}
+                  alt="shopping"
+                />
+              </Link>
+              <div className="md:flex rounded-full bg-[#DD0606] w-4 h-4 text-center items-center justify-center absolute bottom-4 left-4">
+                <span className="text-xs text-black">{countProducts}</span>
+              </div>
+            </div>
+            <div
+              className={`flex flex-col w-[16rem] bg-white absolute top-[83px] right-12 shadow-2xl rounded-md z-30 ${
+                active ? "" : "hidden"
+              }`}
+            >
+              {allProducts.length ? (
+                <>
+                  <div className="flex flex-col text-black justify-between border-b-2 border-gray-200 z-30">
+                    {allProducts.map((product) => (
+                      <div
+                        className="flex justify-between items-center "
+                        key={product.id}
+                      >
+                        <span className="m-4 text-sm ">{product.quantity}</span>
+                        <p className="text-xs w-[100px]">{product.title}</p>
+
+                        <span className=" text-sm font-semibold ">
+                          {product.price}
+                        </span>
+                        <Image
+                          className="m-3 "
+                          width={15}
+                          height={15}
+                          src={"/icon-close.svg"}
+                          alt="close icon"
+                          onClick={() => onDeleteProducts(product)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center text-black justify-center pt-3 pb-3">
+                    <h3 className="text-sm font-semibold mr-3">Total:</h3>
+                    <span className="text-sm">${total}</span>
+                  </div>
+
+                  <button className="bg-gray-100 p-[.5rem] w-full  text-black transition ease-in-out delay-150 hover:-translate-y-0 hover:scale-110 hover:bg-sky-600 hover:text-white duration-300">
+                    Pagar
+                  </button>
+                  <button
+                    onClick={onCleanCart}
+                    className="bg-button-color p-[.5rem] w-full rounded-b-lg text-black transition ease-in-out delay-150 hover:-translate-y-0 hover:scale-110 hover:bg-red-600 hover:text-white duration-300"
+                  >
+                    Vaciar el carrito
+                  </button>
+                </>
+              ) : (
+                <div className="text-sm text-black text-end mt-1 ">
+                  <p className=""> El carrito esta vacio </p>
+                </div>
+              )}
+            </div>
           </div>
           <div
             onClick={() => setOpen(!open)}

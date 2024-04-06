@@ -1,17 +1,46 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useUserContext } from "../contexts/userContext";
+import { Allan } from "next/font/google";
 const Cards = ({ info }) => {
+  const infoData = useUserContext();
+  const {
+    allProducts,
+    setAllProducts,
+    countProducts,
+    setCountProducts,
+    setTotal,
+    total,
+  } = infoData;
+
+  const onAddProduct = (product) => {
+    if (allProducts.find((item) => item.id === product.id)) {
+      const products = allProducts.map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      setTotal(total + product.price * product.quantity);
+      setCountProducts(countProducts + product.quantity);
+      return setAllProducts([...products]);
+    }
+
+    setTotal(total + product.price * product.quantity);
+    setCountProducts(countProducts + product.quantity);
+    setAllProducts([...allProducts, product]);
+  };
+
   return (
-    <div className="pt-4 w-[280px] h-[514px] md:flex md:w-auto  md:mx-auto md:pt-20 md:mb-32">
+    <div className="pt-4 w-[280px] h-[514px] md:flex md:w-auto  md:mx-auto md:pt-20 md:mb-32 ">
       {info.map((product) => (
         <>
           <div
-            key={product.title}
-            className="pb-4 md:w-auto text-black ml-3 md:mx-[30px] "
+            key={product.id}
+            className="pb-4 md:w-auto text-black ml-3 md:mx-[30px] z-40"
           >
-            <div className="flex grid grid-cols-1 relative w-[280px] h-[414px] md:bg-[FFFFFF] md:border-2 md:border-[#E1E1E1] md:rounded-lg">
+            <div className="flex grid grid-cols-1 relative w-[280px] h-[414px] md:bg-[FFFFFF] md:border-2 md:border-[#E1E1E1] md:rounded-lg ">
               <div>
                 <Image
+                  className=""
                   src="/product.png"
                   width={304}
                   height={304}
@@ -56,7 +85,12 @@ const Cards = ({ info }) => {
                 </div>
               </div>
               <div className="h-[20px] mt-4 md:ml-4 md:pt-2">
-                <Image src="/rate.png" width={77.31} height={11.76} />
+                <Image
+                  src="/rate.png"
+                  width={77.31}
+                  height={11.76}
+                  alt="rate"
+                />
               </div>
             </div>
             <div className="flex justify-between w-[280px] text-black ml-3 md:ml-0 md:bg-[#F9F9F9] md:rounded-b-lg md:pt-4 md:pb-4">
@@ -86,7 +120,10 @@ const Cards = ({ info }) => {
                 </div>
               </div>
               <div className="text-center text-sm md:mr-6">
-                <button className="font-bold border-2 rounded-full border-[#EDA836] w-[90px] h-[31px] bg-white">
+                <button
+                  onClick={() => onAddProduct(product)}
+                  className="font-bold border-2 rounded-full border-[#EDA836] w-[90px] h-[31px] bg-white hover:bg-yellow-300"
+                >
                   Agregar
                 </button>
               </div>
