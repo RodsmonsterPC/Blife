@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useUserContext } from "../contexts/userContext";
 import { Allan } from "next/font/google";
 const Cards = ({ info }) => {
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(22);
+
   const infoData = useUserContext();
   const {
     allProducts,
@@ -27,6 +30,17 @@ const Cards = ({ info }) => {
     setTotal(total + product.price * product.quantity);
     setCountProducts(countProducts + product.quantity);
     setAllProducts([...allProducts, product]);
+  };
+
+  const onLike = () => {
+    setLiked(!liked);
+
+    if (liked) {
+      setLikeCount(likeCount - 1);
+    }
+    if (!liked) {
+      setLikeCount(likeCount + 1);
+    }
   };
 
   return (
@@ -66,13 +80,39 @@ const Cards = ({ info }) => {
                 />
               </div>
               <div>
-                <Image
+                {/* <Image
                   className="absolute  right-0 md:right-[-15px] top-3"
                   src="/like.png"
                   width={62}
                   height={31}
                   alt="slider"
-                />
+                /> */}
+                <div
+                  onClick={onLike}
+                  className={`absolute right-0 md:right-[-15px] top-3 border-2 border-zinc-100 w-[62px] h-[31px] rounded-full md:bg-white  hover:bg-[#fda4af] hover:text-white ${
+                    liked ? "bg-[#fecdd3] md:bg-[#fecdd3]" : ""
+                  }`}
+                >
+                  <div>
+                    <div
+                      className={`heart absolute left-3.5 top-3 bg-white ${
+                        liked ? "" : "hidden"
+                      }`}
+                    ></div>
+                  </div>
+                  <div className="w-[20px] h-[20px]">
+                    <Image
+                      className="absolute left-3 md:right-[-15px] top-2"
+                      src="/heart.svg"
+                      width={14}
+                      height={14}
+                      alt="slider"
+                    />
+                  </div>
+                  <div className="text-xs font-bold absolute left-[34px] top-1.5 ">
+                    <p>{likeCount}</p>
+                  </div>
+                </div>
               </div>
               <div className="flex justify-between h-[20px]">
                 <div className="md:ml-4">

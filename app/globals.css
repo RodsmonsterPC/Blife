@@ -11,3 +11,31 @@
 body {
   color: #ffffff;
 }
+
+.heart {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  background: #ff8e8e;
+  transform: rotate(-45deg);
+}
+
+.heart::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff8e8e;
+}
+
+.heart::after {
+  position: absolute;
+  content: "";
+  right: -50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff8e8e;
+}
