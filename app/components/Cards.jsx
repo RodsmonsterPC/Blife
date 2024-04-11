@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useUserContext } from "../contexts/userContext";
+import Link from "next/link";
 import { Allan } from "next/font/google";
 const Cards = ({ info }) => {
   const [liked, setLiked] = useState(false);
@@ -80,22 +81,15 @@ const Cards = ({ info }) => {
                 />
               </div>
               <div>
-                {/* <Image
-                  className="absolute  right-0 md:right-[-15px] top-3"
-                  src="/like.png"
-                  width={62}
-                  height={31}
-                  alt="slider"
-                /> */}
                 <div
                   onClick={onLike}
-                  className={`absolute right-0 md:right-[-15px] top-3 border-2 border-zinc-100 w-[62px] h-[31px] rounded-full md:bg-white  hover:bg-[#fda4af] hover:text-white ${
-                    liked ? "bg-[#fecdd3] md:bg-[#fecdd3]" : ""
+                  className={`absolute right-0 md:right-[-15px] top-3 border-2 border-zinc-100 w-[62px] h-[31px] rounded-full  hover:bg-[#fda4af] hover:text-white ${
+                    liked ? "bg-[#fecdd3] md:bg-[#fecdd3]" : "md:bg-white"
                   }`}
                 >
                   <div>
                     <div
-                      className={`heart absolute left-3.5 top-3 bg-white ${
+                      className={`heart absolute left-3.5 top-3 ${
                         liked ? "" : "hidden"
                       }`}
                     ></div>
@@ -137,26 +131,32 @@ const Cards = ({ info }) => {
               <div className="md:ml-6">
                 <Image src="/share.png" width={55} height={12} alt="share" />
                 <div className="flex mt-[9px]">
-                  <Image
-                    className="mr-3"
-                    src="/face.png"
-                    width={10}
-                    height={10}
-                    alt="face"
-                  />
-                  <Image
-                    src="/twitter.png"
-                    width={10}
-                    height={10}
-                    alt="twitter"
-                  />
-                  <Image
-                    className="ml-3"
-                    src="/insta.png"
-                    width={10}
-                    height={10}
-                    alt="insta"
-                  />
+                  <Link href="https://www.facebook.com/">
+                    <Image
+                      className="mr-3"
+                      src="/face.png"
+                      width={10}
+                      height={10}
+                      alt="face"
+                    />
+                  </Link>
+                  <Link href="https://twitter.com/?lang=es">
+                    <Image
+                      src="/twitter.png"
+                      width={10}
+                      height={10}
+                      alt="twitter"
+                    />
+                  </Link>
+                  <Link href="https://www.instagram.com/">
+                    <Image
+                      className="ml-3"
+                      src="/insta.png"
+                      width={10}
+                      height={10}
+                      alt="insta"
+                    />
+                  </Link>
                 </div>
               </div>
               <div className="text-center text-sm md:mr-6">
