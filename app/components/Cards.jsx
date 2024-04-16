@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useUserContext } from "../contexts/userContext";
 import Link from "next/link";
-import { Allan } from "next/font/google";
+import Carousel from "./Carousel";
+
+let products = ["/product.png", "/product.png", "/product.png"];
 const Cards = ({ info }) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(22);
@@ -53,24 +55,11 @@ const Cards = ({ info }) => {
             className="pb-4 md:w-auto text-black ml-3 md:mx-[30px] z-40"
           >
             <div className="flex grid grid-cols-1 relative w-[280px] h-[414px] md:bg-[FFFFFF] md:border-2 md:border-[#E1E1E1] md:rounded-lg ">
-              <div>
-                <Image
-                  className=""
-                  src="/product.png"
-                  width={304}
-                  height={304}
-                  alt="Product"
-                />
-              </div>
-              <div>
-                <Image
-                  className="absolute left-24 top-[238px]"
-                  src="/Slider.png"
-                  width={84}
-                  height={32}
-                  alt="slider"
-                />
-              </div>
+              <Carousel autoSlide={true} autoSlideInterval={3000}>
+                {products.map((product) => (
+                  <Image src={product} width={304} height={304} alt="Imagen" />
+                ))}
+              </Carousel>
               <div>
                 <Image
                   className="absolute right-0 md:right-[-15px] top-12"
